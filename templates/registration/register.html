@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+| Register
+{% endblock %}
+
+{% block content %}
+<h2 class="display-4 mb-4">Register</h2>
+<form action="/auth/register" method="post" style="width: 500px;">
+  {% if errors %}
+  {% for error in errors %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ error }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+  {% endif %}
+
+  {% csrf_token %}
+  <div class="form-outline mb-3">
+    <input type="text" id="username" class="form-control" />
+    <label class="form-label" for="username">Username</label>
+  </div>
+  <div class="form-outline mb-3">
+    <input type="text" id="email" class="form-control" />
+    <label class="form-label" for="email">Email</label>
+  </div>
+  <div class="form-outline mb-3">
+    <input type="password" id="password" class="form-control" />
+    <label class="form-label" for="password">Password</label>
+  </div>
+  <div class="form-outline mb-3">
+    <input type="password" id="confpassworrd" class="form-control" />
+    <label class="form-label" for="confpassworrd">Confirm Password</label>
+  </div>
+  <button type="submit" class="btn btn-primary btn-block">Register</button>
+</form>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+| {{ product.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="content d-flex align-items-center justify-content-center">
+        <div class="image my-5 mx-5">
+            <img class="image-fluid w-100" src="{{ product.product_image.url }}" alt="{{ product.title }}">
+        </div>
+        <div class="textcontent" style="max-width: 500px;">
+            <h1>{{ product.title }}</h1>
+            <p class="mt-5">{{ product.long_description }}</p>
+            <p class="h4 text-primary mt-4">${{ product.price }}</p>
+
+            <a href="/addtocart/{{ product.id }}" class="btn btn-primary btn-small mt-2"><i class="fas fa-shopping-cart"></i> Add to cart</a>    
+        </div>
+    </div>
+{% endblock %}

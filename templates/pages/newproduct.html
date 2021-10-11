@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+| New
+{% endblock %}
+
+{% block content %}
+<h2 class="display-4 mb-4">Add Product</h2>
+<form method="post" enctype="multipart/form-data" style="width: 500px;">
+  {% if form.non_field_errors %}
+  {% for error in form.non_field_errors %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{ error }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  {% csrf_token %}
+  {% for field in form.visible_fields %}
+    {% if field.label == 'In stock' %}
+        <div class="mb-3 form-check">
+            <label for="instock" class="form-check-label">{{ field.label }}</label>
+            {% render_field field id="instock" class="form-check-input" %}
+        </div>
+    {% else %}
+        <div class="mb-3">
+            <label for="label" class="form-label">{{ field.label }}</label>
+            {% render_field field class="form-control" %}
+        </div>
+    {% endif %}
+  {% endfor %}
+  <button type="submit" class="mb-3 btn btn-primary btn-block">Add Product</button>
+  <a href="/auth/"></a>
+</form>
+{% endblock %}

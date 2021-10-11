@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
+    rel="stylesheet"
+    />
+
+    <style>
+      body::before {
+        display: block;
+        content: '';
+        height: 75px;
+      }
+    </style>
+    <title>Textore {% block title %} {% endblock %}</title>
+  </head>
+  <body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="/">Textore°</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="align-middle collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="align-middle h-100 navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'shop:index' %}">Shop</a>
+              </li>
+              {% if request.user.is_authenticated %}
+              {% if user.is_superuser %}
+              <li>
+                <a class="nav-link active" href="{% url 'shop:addproduct' %}"><i class="fas fa-plus"></i> Add product</a>
+              </li>
+              {% endif %}
+                <li class="nav-item">
+                  <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'shop:cart' %}">
+                  <div type="button" class="btn btn-primary position-relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {{user.cart.cartitem_set.count}}
+                      <span class="visually-hidden">unread messages</span>
+                    </span>
+                  </div>
+                </a>
+              </li>
+              {% else %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'register' %}">Register</a>
+                </li>
+                
+              {% endif %}
+          </div>
+        </div>
+      </nav>
+    <div class="container">{% block content %} {% endblock %}</div>
+
+   <!-- MDB -->
+    <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  </body>
+</html>

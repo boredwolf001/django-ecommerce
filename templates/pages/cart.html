@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+| Cart
+{% endblock %}
+
+{% block content %}
+        {% if not cart_items %}
+            <div class="mt-5 text-center">
+                <p class="display-4">No items in cart</p>
+                <a href="{% url 'shop:shop' %}" class="center btn btn-outline-primary">Continue Shopping</a>
+            </div>
+        {% else %}
+            {% for product in cart_items %}
+            <table class="table mt-5">
+                <thead>
+                    <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                      </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ product.product.title }}</td>
+                    <td>$ <span id="price{{product.id}}"> {{ product.price }}</span></td>
+                    <td><input min="1" data-itemid="{{ product.id }}" data-price="{{product.product.price}}" style="width: fit-content;" class="form-control" type="number" id="qty" value="{{ product.quantity }}"></td>
+                    <td>
+                        <form action="{% url 'shop:deletecart' product.id %}">
+                            <button type="submit" class="btn btn-danger">delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+          {% endfor %}
+        {% endif %}
+
+  {% if cart_items %}
+    <a href="{% url 'shop:checkout' %}" class="btn btn btn-dark">Checkout</a>
+  {% endif %}
+
+  <script>
+   const numberInput = document.getElementById('qty')
+
+
+    numberInput.addEventListener('input', (e) => {
+        const priceEl = document.querySelector(`#price${e.target.getAttribute('data-itemid')}`)
+        priceEl.innerText = parseFloat(e.target.getAttribute('data-price')) * parseFloat(e.target.value)
+
+        let data = new FormData(); // 2
+    
+        data.append("qty", e.target.value)  
+        data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+        
+        axios.post(`/cart/update/${e.target.getAttribute('data-itemid')}`, data) // 4
+        .then(res => console.log('Updated product'))
+        .catch(errors => console.log(errors)) // 6
+
+    })
+    </script>
+{% endblock %}
